@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="ru">
+  <head><!-- кнопка разрешением не считается. Ключ всё равно проверяет сервер -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Модерация гостевой</title>
+    <style>
+      body {
+        font:
+          16px/1.6 system-ui,
+          sans-serif;
+        background: #17221d;
+        color: #e4dfc7;
+        margin: 0;
+        padding: 24px;
+        max-width: 850px;
+        margin: auto;
+      }
+      input,
+      textarea,
+      button {
+        font: inherit;
+        box-sizing: border-box;
+        padding: 8px;
+        border: 1px solid #7e8568;
+        background: #e8dfc3;
+        color: #202c24;
+      }
+      textarea,
+      input {
+        width: 100%;
+      }
+      button {
+        cursor: pointer;
+        margin: 8px 8px 8px 0;
+      }
+      article {
+        background: #cbbd98;
+        color: #253126;
+        padding: 20px;
+        margin: 20px 0;
+        border-left: 4px solid #8c9670;
+      }
+      .message {
+        white-space: pre-wrap;
+        overflow-wrap: anywhere;
+      }
+      .flags {
+        color: #862e22;
+      }
+      label {
+        display: block;
+      }
+      input[type="checkbox"] {
+        width: auto;
+      }
+      .small {
+        font-size: 13px;
+      }
+      #status {
+        white-space: pre-wrap;
+      }
+      h1 {
+        font-size: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Гостевая · модерация</h1>
+    <form id="login">
+      <label
+        >Ключ модератора<input
+          id="key"
+          type="password"
+          required
+          autocomplete="off"
+      /></label>
+      <p class="small">
+        Ключ находится в PythonAnywhere: Files → guestbook-data →
+        guestbook-admin-key.txt. Не публикуй его.
+      </p>
+      <button>Войти</button>
+    </form>
+    <div id="controls" hidden>
+      <button id="automod" type="button">Автомодерация…</button>
+      <p class="small">
+        Обычные записи проходят сразу. Подозрительные остаются в очереди. Мат
+        сам по себе разрешён. Можно отклонить и уже опубликованную запись.
+      </p>
+      <button id="refresh">Обновить</button
+      ><button id="export">Скачать записи</button
+      ><button id="logout">Выйти</button
+      ><label
+        >Показать
+        <select id="filter">
+          <option value="pending">Ожидающие</option>
+          <option value="approved">Одобренные</option>
+          <option value="rejected">Отклонённые</option>
+          <option value="all">Все</option>
+        </select></label
+      >
+    </div>
+    <p id="status" role="status"></p>
+    <div id="entries"></div>
+    <button id="more" hidden>Загрузить ещё</button>
+    <script>
+      (function () {
+        "use strict";
+        var key = "",
+          items = [],
+          next = null,
+          $ = function (id) {
+            return document.getElementById(id);
+          };
+        async function request(path, payload) {
+          var res = await fetch("/api/admin/" + path, {
+            method: payload ? "POST" : "GET",
+            headers: {
+              Authorization: "Bearer " + key,
+              "Content-Type": "application/json"
+            },
+            body: payload ? JSON.stringify(payload) : undefined
+          });
+          var data = await res.json();
+          if (!res.ok) {
+            throw new Error(data.message || "Ошибка");
+          }
+          return data;
+        }
+        async function load(more) {
+          try {
+            var config = await request("settings");
+            $("automod").textContent =
+              "Автомодерация: " + (config.enabled ? "ВКЛ" : "ВЫКЛ");
+            $("automod").setAttribute("aria-pressed", String(config.enabled));
+            var data = await request(
+              "entries" + (more && next ? "?before=" + next : "")
+            );
+            if (more) {
+              items = items.concat(data.entries);
+            } else {
+              items = data.entries;
+            }
+            next = data.next;
+            $("more").hidden = !next;
+            $("login").hidden = true;
+            $("controls").hidden = false;
+            $("key").value = "";
+            $("status").textContent = "";
+            render();
+          } catch (e) {
+            $("status").textContent = e.message;
+          }
+        }
+        function render() {
+          $("entries").textContent = "";
+          var count = 0;
+          items.forEach(function (item) {
+            if (
+              $("filter").value !== "all" &&
+              item.status !== $("filter").value
+            )
+              {
+              return;
+            }
+            count++;
+            var a = document.createElement("article"),
+              h = document.createElement("b");
+            h.textContent =
+              "#" + item.id + " · " + item.name + " · " + item.status;
+            a.appendChild(h);
+            var p = document.createElement("p");
+            p.className = "message";
+            p.textContent = item.message;
+            a.appendChild(p);
+            if (item.flags.length) {
+              var flags = document.createElement("p");
+              flags.className = "flags";
+              flags.textContent = "Антиспам: " + item.flags.join(", ");
+              a.appendChild(flags);
+            }
+            var l = document.createElement("label"),
+              check = document.createElement("input");
+            check.type = "checkbox";
+            check.checked = item.danmaku;
+            l.appendChild(check);
+            l.appendChild(
+              document.createTextNode(" Разрешить фразу в данмаку")
+            );
+            a.appendChild(l);
+            var quote = document.createElement("textarea");
+            quote.rows = 2;
+            quote.maxLength = 64;
+            quote.value = item.quote;
+            quote.setAttribute("aria-label", "Фраза из записи, до 64 знаков");
+            a.appendChild(quote);
+            ["approved", "rejected", "pending"].forEach(function (state) {
+              var b = document.createElement("button");
+              b.textContent =
+                state === "approved"
+                  ? "Одобрить"
+                  : state === "rejected"
+                    ? "Отклонить"
+                    : "Вернуть в очередь";
+              b.onclick = async function () {
+                b.disabled = true;
+                try {
+                  await request("moderate", {
+                    id: item.id,
+                    status: state,
+                    quote: quote.value,
+                    danmaku: check.checked
+                  });
+                  await load();
+                } catch (e) {
+                  $("status").textContent = e.message;
+                  b.disabled = false;
+                }
+              };
+              a.appendChild(b);
+            });
+            $("entries").appendChild(a);
+          });
+          if (!count) {
+            $("entries").textContent = "Здесь пока пусто.";
+          }
+        }
+        $("automod").onclick = async function () {
+          this.disabled = true;
+          try {
+            await request("settings", {
+              enabled: this.getAttribute("aria-pressed") !== "true"
+            });
+            await load();
+          } catch (e) {
+            $("status").textContent = e.message;
+          } finally {
+            this.disabled = false;
+          }
+        };
+        $("login").onsubmit = function (e) {
+          e.preventDefault();
+          key = $("key").value.trim();
+          load();
+        };
+        $("refresh").onclick = function () {
+          load();
+        };
+        $("more").onclick = function () {
+          load(true);
+        };
+        $("filter").onchange = render;
+        $("logout").onclick = function () {
+          key = "";
+          items = [];
+          $("entries").textContent = "";
+          $("login").hidden = false;
+          $("controls").hidden = true;
+          $("more").hidden = true;
+        };
+        $("export").onclick = async function () {
+          try {
+            var data = await request("export");
+            var url = URL.createObjectURL(
+              new Blob([JSON.stringify(data, null, 2)], {
+                type: "application/json"
+              })
+            );
+            var link = document.createElement("a");
+            link.href = url;
+            link.download = "guestbook-export.json";
+            link.click();
+            setTimeout(function () {
+              URL.revokeObjectURL(url);
+            }, 1000);
+          } catch (e) {
+            $("status").textContent = e.message;
+          }
+        };
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="ru">
+  <head><!-- всё выключено. Тут даже гирлянды дёргать не надо -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>404 — идёт ремонт</title>
+    <style>
+      @font-face {
+        font-family: Press;
+        src: url(Шрифт/PressStart2P-Regular.ttf) format("truetype");
+        font-display: swap;
+      }
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background: #101619;
+      }
+      body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #c3c6bd;
+        font-family: Press, "Courier New", monospace;
+        text-align: center;
+      }
+      body:before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: url(panels-dark.png) repeat;
+        background-size: 384px 384px;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+        opacity: 0.55;
+      }
+      main {
+        position: relative;
+        padding: 30px 16px;
+        text-shadow: 3px 3px #101619;
+      }
+      h1 {
+        font-size: clamp(48px, 12vw, 96px);
+        font-weight: 400;
+        margin: 0 0 28px;
+      }
+      p {
+        font-size: clamp(12px, 3vw, 20px);
+        line-height: 2;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>404</h1>
+      <p>идёт ремонт</p>
+    </main>
+  </body>
+</html>

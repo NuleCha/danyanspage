@@ -1,0 +1,168 @@
+<!-- Отдельный документ. Шрифт и перевод от родительской страницы сами сюда не заведутся. --><!doctype html>
+<html lang="ru">
+  <meta charset="utf-8" /><meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  /><title>Гостевая DANYAN</title>
+  <link
+    rel="stylesheet"
+    href="https://danyanspage.neocities.org/style.css?v=cursor-motion-v2-20261021"
+  />
+  <style>
+    html,
+    body {
+      background: #c9b98f;
+      margin: 0;
+      min-height: 0;
+      overflow-x: hidden;
+    }
+    .card {
+      margin: 0;
+      box-shadow: none;
+      border: 0;
+      padding: 16px 12px;
+      box-sizing: border-box;
+    }
+    .guest-info {
+      font-size: 9px;
+    }
+    body {
+      font-family: monospace;
+    }
+    #guest-posts {
+      max-height: 900px;
+      overflow: auto;
+    }
+  </style>
+  <script>
+    document.documentElement.lang =
+      new URLSearchParams(location.search).get("lang") === "en" ? "en" : "ru";
+    document.documentElement.setAttribute(
+      "data-low-power",
+      new URLSearchParams(location.search).get("low") === "1" ? "true" : "false"
+    );
+    window.SITE_SETTINGS = { guestbookApiUrl: "/api" };
+    window.siteText = function (ru, en) {
+      if (document.documentElement.lang === "en") {
+        return en;
+      }
+      return ru;
+    };
+  </script>
+  <section class="card guestbook" id="guestbook">
+    <h2>КТО ТУТ БЫЛ</h2>
+    <p class="demo-label" id="guest-service-note">
+      Записи появляются после одобрения.
+    </p>
+    <div id="guest-posts"></div>
+    <p id="guest-load-status" role="status"></p>
+    <button id="guest-more" type="button" hidden>ЕЩЁ ЗАПИСИ</button>
+    <button id="guest-refresh" type="button" hidden>ОБНОВИТЬ</button>
+    <details class="guest-info">
+      <summary>О гостевой и данных</summary>
+      <p>
+        Записи хранятся на отдельном сервере PythonAnywhere и видны всем после
+        публикации. Пиши под ником, не оставляй личные данные. Для защиты от
+        спама сервер хранит хеш адреса подключения; PythonAnywhere также ведёт
+        технические журналы. Настройки, достижения и право отключить свою фразу
+        сохраняются в этом браузере. После очистки данных браузера отключить
+        фразу поможет модератор. Связаться можно через ТГ в меню.
+      </p>
+      <p>
+        Для реакций браузер сохраняет случайный идентификатор. Сервер хранит его
+        хеш и выбранные реакции; другим посетителям видны только общие числа.
+      </p>
+    </details>
+    <p class="reaction-credit">
+      <a href="https://www.kolobok.us/" target="_blank" rel="noopener"
+        >Copyright © Aiwan. Kolobok Smiles</a
+      >
+    </p>
+    <form id="guest-form">
+      <label for="guest-name">Как тебя записать?</label>
+      <input
+        id="guest-name"
+        maxlength="32"
+        placeholder="Анон"
+        autocomplete="nickname"
+      />
+      <label for="guest-message">Записка (до 3000 знаков)</label>
+      <textarea
+        id="guest-message"
+        maxlength="3000"
+        rows="5"
+        required
+      ></textarea>
+      <div class="guest-trap" aria-hidden="true">
+        <label for="guest-website">Оставь пустым</label>
+        <input id="guest-website" tabindex="-1" autocomplete="off" />
+      </div>
+      <fieldset class="guest-flight-settings">
+        <legend>Фраза для полёта</legend>
+        <label class="guest-check">
+          <input id="guest-danmaku" type="checkbox" checked />
+          Пустить фразу по сайту
+        </label>
+        <p class="guest-hint">
+          Полная запись останется в гостевой. Летать будет только эта фраза.
+        </p>
+        <button id="guest-select-quote" type="button">ВЗЯТЬ ВЫДЕЛЕННОЕ</button>
+        <label for="guest-quote">
+          Выбери фрагмент своей записи, до 64 знаков
+        </label>
+        <input id="guest-quote" maxlength="64" autocomplete="off" />
+        <small id="guest-quote-count">0 / 64</small>
+        <div
+          id="guest-quote-preview"
+          class="guest-quote-preview"
+          aria-label="Предпросмотр летающей фразы"
+        ></div>
+      </fieldset>
+      <button id="guest-submit" type="submit" disabled>ОТПРАВИТЬ</button>
+      <p id="guest-status" role="status"></p>
+    </form>
+  </section>
+  <script src="https://danyanspage.neocities.org/guestbook.js?v=cursor-motion-v2-20261021"></script>
+  <script>
+    (function () {
+      var target = "https://danyanspage.neocities.org";
+      window.addEventListener("message", function (e) {
+        if (
+          e.origin !== target ||
+          e.source !== parent ||
+          !e.data ||
+          e.data.type !== "site-preferences"
+        )
+          {
+          return;
+        }
+        document.body.classList.toggle("emo-weather", e.data.emo === true);
+        document.documentElement.setAttribute(
+          "data-low-power",
+          String(e.data.low === true)
+        );
+      });
+      function send() {
+        var entries = Array.from(
+          document.querySelectorAll("#guest-posts .guest-entry[data-danmaku]")
+        ).map(function (n) {
+          return n.getAttribute("data-danmaku");
+        });
+        parent.postMessage(
+          {
+            type: "guestbook-frame",
+            height: document.body.scrollHeight,
+            phrases: entries
+          },
+          target
+        );
+      }
+      new ResizeObserver(send).observe(document.body);
+      document.addEventListener("guestbook-updated", send);
+      document.addEventListener("guestbook-submitted", function () {
+        parent.postMessage({ type: "guestbook-submitted" }, target);
+      });
+    })();
+  </script>
+</html>
+<script src="https://danyanspage.neocities.org/cursor-motion-v2-20261021.js"></script>

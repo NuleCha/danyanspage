@@ -1,0 +1,18 @@
+Custom 88x31 link layouts using existing credited site assets. These are not official author badges.
+Asset attribution: ../Курсоры/credits.txt and ../toy-credits.txt. Local images, no hotlinking.
+
+Helper link logos: Devicon (MIT), Simple Icons (CC0), MDN favicon; respective trademarks belong to their owners.
+aseprite: https://raw.githubusercontent.com/simple-icons/simple-icons/develop/icons/aseprite.svg (embedded logo)
+photoshop: https://raw.githubusercontent.com/devicons/devicon/master/icons/photoshop/photoshop-original.svg (embedded logo)
+vscode: https://raw.githubusercontent.com/devicons/devicon/master/icons/vscode/vscode-original.svg (embedded logo)
+github: https://raw.githubusercontent.com/devicons/devicon/master/icons/github/github-original.svg (embedded logo)
+python: https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg (embedded logo)
+nodejs: https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original.svg (embedded logo)
+sqlite: https://raw.githubusercontent.com/devicons/devicon/master/icons/sqlite/sqlite-original.svg (embedded logo)
+mdn: https://developer.mozilla.org/favicon.svg (embedded logo)
+html: https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg (embedded logo)
+css: https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original.svg (embedded logo)
+javascript: https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg (embedded logo)
+pythonanywhere: https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg (embedded logo)
+neocities-api: https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original.svg (embedded logo)
+pillow: https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg (embedded logo)

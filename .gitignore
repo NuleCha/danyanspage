@@ -1,0 +1,12 @@
+publish/
+.private/
+.env
+.env.*
+!.env.example
+__pycache__/
+*.pyc
+*.db
+*.sqlite*
+*.log
+node_modules/
+Инструменты/build-manifest.json

@@ -1,0 +1,9 @@
+Wall textures: Painted Plaster Wall by Amal Kumar and Peeling Painted Wall by Dimitrios Savva, Poly Haven, CC0.
+https://polyhaven.com/a/painted_plaster_wall
+https://polyhaven.com/a/peeling_painted_wall
+https://polyhaven.com/license
+Photos reduced to 512px; peeling map converted to grayscale for CSS green paint tint.
+
+Paper Fibers by Heliodor Jalba / Subtle Patterns via Transparent Textures.
+https://www.transparenttextures.com/paper-fibers.html
+Paper pattern reduced to 256px.

@@ -1,0 +1,74 @@
+.danmaku-layer {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  overflow: hidden;
+  pointer-events: none;
+  contain: layout paint;
+}
+.danmaku-line {
+  position: absolute;
+  left: 100%;
+  display: block;
+  white-space: nowrap;
+  font-family: "Press Start 2P", "Courier New", monospace;
+  font-size: 13px;
+  line-height: 2;
+  padding: 3px 8px;
+  background: #152119ad;
+  text-shadow: 2px 2px #101a11;
+  pointer-events: none;
+  animation: danmaku-flight 16s linear forwards;
+  will-change: transform;
+}
+@keyframes danmaku-flight {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(calc(-100vw - 100%));
+  }
+}
+.danmaku-toggle {
+  position: fixed;
+  right: 12px;
+  bottom: 12px;
+  z-index: 22;
+  background: #c9b98f;
+  color: #263423;
+  border: 3px solid #737d59;
+  font-size: 8px;
+  line-height: 1.8;
+  padding: 10px;
+  box-shadow: 3px 3px #142219;
+}
+@media (max-width: 600px) {
+  .danmaku-line {
+    font-size: 10px;
+  }
+  .danmaku-toggle {
+    font-size: 7px;
+    right: 8px;
+    bottom: 8px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .danmaku-line {
+    animation: none;
+    display: none;
+  }
+}
+.danmaku-back {
+  z-index: 1;
+}
+.danmaku-back .danmaku-line {
+  background: transparent;
+  color: #d5d0ae;
+  text-shadow: 2px 2px #17251c;
+}
+
+.danmaku-line {white-space: normal; width: max-content; max-width: 80vw;
+  box-sizing: border-box; max-height: calc(3.6em + 6px); line-height: 1.8;
+  overflow: hidden; overflow-wrap: anywhere;}
+.danmaku-toggle {font-family: monospace; font-size: 12px; cursor: pointer;}
+@media(max-width:650px) {.danmaku-line {max-width:90vw; font-size:11px;}}

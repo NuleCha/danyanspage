@@ -1,0 +1,12 @@
+{
+  "id": "new-track",
+  "type": "music",
+  "draft": true,
+  "date": "2026-10-18",
+  "title": "Название трека",
+  "text": [
+    "Пара слов о записи."
+  ],
+  "url": "https://example.com/",
+  "linkText": "Послушать ↗"
+}

@@ -1,0 +1,75 @@
+/* этот плеер при переходе не трогать */
+html,
+body.media-host {
+  height: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #101619;
+}
+body.media-host {
+  font-family: "Press Start 2P", monospace;
+}
+.media-host > .site-nav,
+.media-host > #caramel-warning,
+.media-host > .emo-rain {
+  display: none !important;
+}
+#site-content {
+  display: block;
+  width: 100%;
+  height: 100vh;
+  border: 0;
+  background: #101619;
+}
+.media-host .caramel-player {
+  z-index: 100;
+}
+.media-host .caramel-player button {
+  font-size: 8px;
+}
+.media-host .emo-player iframe {
+  min-height: 200px;
+}
+/* просто значок загрузки в углу. Не ещё одна заставка поверх всего. */
+.site-load-status {
+  position: fixed;
+  bottom: 5px;
+  left: 5px;
+  z-index: 90;
+  max-width: calc(100vw - 10px);
+  padding: 5px 7px;
+  background: #171923;
+  color: #f4f4f4;
+  border: 1px solid #6b7688;
+  font:
+    10px/1.5 system-ui,
+    sans-serif;
+  pointer-events: none;
+  opacity: 0.95;
+}
+.site-load-status.is-loaded {
+  opacity: 0.7;
+}
+@media (max-width: 500px) {
+  .site-load-status {
+    font-size: 9px;
+    bottom: 3px;
+    padding: 2px 5px;
+  }
+}
+
+.site-load-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 5px;
+  z-index: 100;
+  accent-color: #e94b9d;
+  border: 0;
+}
+.site-load-bar[hidden] {
+  display: none;
+}

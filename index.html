@@ -1,0 +1,770 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>DANYAN — личная страничка</title>
+    <script src="preferences.js"></script>
+    <link rel="stylesheet" href="style.css?v=29" />
+    <link
+      rel="alternate"
+      type="application/rss+xml"
+      title="DANYAN — RSS"
+      href="https://danyanspage.neocities.org/rss.xml"
+    />
+  </head>
+  <body>
+    <!-- фон отдельно. В нём ничего для чтения нет -->
+    <div id="facade" aria-hidden="true"></div>
+    <main
+      class="construction pixel-construction"
+      aria-label="Фасад под полупрозрачной строительной сеткой"
+    >
+      <img src="scaffold.svg?v=29" alt="" width="940" height="1060" />
+    </main>
+    <!-- а вот здесь уже содержимое -->
+    <main class="noticeboard">
+      <div class="site-controls">
+        <div class="simple-control">
+          <button
+            id="low-power"
+            class="physical-switch"
+            type="button"
+            aria-pressed="false"
+            aria-describedby="simple-hint"
+          >
+            <span class="switch-lamp" aria-hidden="true"></span>
+            <span id="simple-title">УПРОЩЁННЫЙ РЕЖИМ</span>
+            <span id="simple-state">ВЫКЛ</span>
+          </button>
+          <small id="simple-hint">* если сайт плохо грузится</small>
+        </div>
+        <div class="language-dock">
+          <button
+            id="language"
+            class="language-switch"
+            type="button"
+            role="switch"
+            aria-checked="false"
+            aria-label="Переключить на английский"
+          >
+            <span>RU</span>
+            <span>EN</span>
+          </button>
+        </div>
+      </div>
+      <!-- шапка -->
+      <header class="site-banner">
+        <small>СКОРО ЗДЕСЬ ЧТО-ТО БУДЕТ · ПОКА ТАК</small>
+        <h1>DANYAN СТРАНИЧКА</h1>
+        <p>Теперь ещё и сайт. Ну дела!</p>
+      </header>
+      <!-- куда идти -->
+      <nav class="site-nav">
+        <a href="#projects">ОБЪЯВЛЕНИЯ</a>
+        <a href="#guestbook">ГОСТЕВАЯ</a>
+        <a class="chat-menu-link" href="chat.html" title="Открыть чат"
+          >ЧАТ ↗</a
+        >
+        <a href="#resources">ССЫЛКИ</a>
+        <a id="telegram-link" hidden target="_blank" rel="noopener">ТГ ↗</a>
+        <button id="quiet">СВЕТ: ПАУЗА</button>
+      </nav>
+      <p id="translation-note" class="translation-note" hidden lang="en">
+        English translation is in progress. Some content is still in Russian.
+      </p>
+      <div class="board-grid">
+        <!-- слева мем и всё, во что можно потыкать -->
+        <aside>
+          <figure class="meme-print">
+            <span class="meme-tape tape-left" aria-hidden="true"></span>
+            <span class="meme-tape tape-right" aria-hidden="true"></span>
+            <a
+              href="based-meme.png"
+              target="_blank"
+              rel="noopener"
+              aria-label="Открыть мем в полном размере"
+            >
+              <picture>
+                <source srcset="based-meme.png" type="image/png" />
+                <img
+                  src="based-meme.png"
+                  width="640"
+                  height="640"
+                  alt="haha my meme is based — мем с Юи"
+                  data-alt-ru="haha my meme is based — мем с Юи"
+                  data-alt-en=""
+                />
+              </picture>
+            </a>
+            <span class="paper-fold" aria-hidden="true"></span>
+          </figure>
+          <section class="card cursor-card">
+            <h2>КУРСОРЫ</h2>
+            <p>
+              Здесь можно выбрать курсор. Некоторые открываются от определённых
+              действий на сайте.
+            </p>
+            <div
+              id="cursor-options"
+              class="cursor-options"
+              role="group"
+              aria-label="Выбор курсора"
+            ></div>
+          </section>
+          <section class="card">
+            <h2>ФАКТЫ О ХАБАРОВСКЕ</h2>
+            <p id="fortune-text" aria-live="polite">
+              Нажми — узнаешь что-нибудь крутое.
+            </p>
+            <p class="fact-credit">
+              <a id="fact-source" hidden target="_blank" rel="noopener"></a>
+            </p>
+            <button id="fortune">ВЫДАТЬ ФАКТ</button>
+          </section>
+          <section class="card chebu-card">
+            <h2>ЧЕБУПЕЛИ АХАХХА</h2>
+            <div class="chebu-oven">
+              <img
+                src="microwave-photo.jpg"
+                width="192"
+                height="94"
+                alt="Микроволновка"
+              />
+              <span id="chebu-time" aria-live="polite">00:00</span>
+            </div>
+            <div id="chebu-dish" aria-label="Чебупели"></div>
+            <button
+              id="chebu-start"
+              type="button"
+              aria-label="Разогреть чебупели"
+            >
+              ▶
+            </button>
+            <span id="chebu-status" class="sr-only" role="status"></span>
+          </section>
+          <section class="card folded">
+            <h2>НЕ ОТГИБАТЬ</h2>
+            <button id="peel" aria-expanded="false">
+              потянуть за уголок ↗
+            </button>
+            <p id="secret" hidden>⑨ тебя же просили, НЕ ОТГИБАТЬ!</p>
+          </section>
+        </aside>
+        <!-- справа записи и гостевая -->
+        <div id="projects">
+          <section class="card intro">
+            <small>ЗАПИСКА</small>
+            <h2>ТЫ КУДА ЗАЛЕЗ?</h2>
+            <p>
+              В маленький личный угол интернета. Тут будут музыка, творчество и
+              всякая штуковня, но это будет ещё дополняться. Пока можно потыкать
+              бумажки и оставить след в гостевой, а также посидеть в чатике!
+            </p>
+            <p class="green">&gt;идёт стройка</p>
+          </section>
+          <section class="card">
+            <span class="stamp">В РАЗРАБОТКЕ</span>
+            <h2>
+              РАНО ИЛИ ПОЗДНО НАЧНУ ПИСАТЬ МУЗЛО, НО МЕСТО УЖЕ ПОДГОТОВЛЕНО
+            </h2>
+            <p>Когда будет что послушать — повешу здесь.</p>
+            <div class="cassette" aria-hidden="true">● ━ ●</div>
+            <small>запись пока не началась</small>
+          </section>
+          <section class="card">
+            <span class="stamp">В РАЗРАБОТКЕ</span>
+            <h2>МАСТЕРСКАЯ ВСЯКОГО</h2>
+            <p>Здесь появится что-то ещё</p>
+          </section>
+          <!-- POSTS:START -->
+
+<!-- POSTS:END -->
+
+          <section class="card guestbook" id="guestbook">
+            <h2>КТО ТУТ БЫЛ</h2>
+            <p class="demo-label" id="guest-service-note">
+              Записи появляются после одобрения.
+            </p>
+            <div id="guest-posts"></div>
+            <p id="guest-load-status" role="status"></p>
+            <button id="guest-more" type="button" hidden>ЕЩЁ ЗАПИСИ</button>
+            <button id="guest-refresh" type="button" hidden>ОБНОВИТЬ</button>
+            <details class="guest-info">
+              <summary>О гостевой и данных</summary>
+              <p>
+                Записи хранятся на отдельном сервере PythonAnywhere и видны всем
+                после публикации. Пиши под ником, не оставляй личные данные. Для
+                защиты от спама сервер хранит хеш адреса подключения;
+                PythonAnywhere также ведёт технические журналы. Настройки,
+                достижения и право отключить свою фразу сохраняются в этом
+                браузере. После очистки данных браузера отключить фразу поможет
+                модератор. Связаться можно через ТГ в меню.
+              </p>
+              <p>
+                Для реакций браузер сохраняет случайный идентификатор. Сервер
+                хранит его хеш и выбранные реакции; другим посетителям видны
+                только общие числа.
+              </p>
+            </details>
+            <p class="reaction-credit">
+              <a href="https://www.kolobok.us/" target="_blank" rel="noopener">
+                Copyright © Aiwan. Kolobok Smiles
+              </a>
+            </p>
+            <form id="guest-form">
+              <label for="guest-name">Как тебя записать?</label>
+              <input
+                id="guest-name"
+                maxlength="32"
+                placeholder="Анон"
+                autocomplete="nickname"
+              />
+              <label for="guest-message">Записка (до 3000 знаков)</label>
+              <textarea
+                id="guest-message"
+                maxlength="3000"
+                rows="5"
+                required
+              ></textarea>
+              <div class="guest-trap" aria-hidden="true">
+                <label for="guest-website">Оставь пустым</label>
+                <input id="guest-website" tabindex="-1" autocomplete="off" />
+              </div>
+              <fieldset class="guest-flight-settings">
+                <legend>Фраза для полёта</legend>
+                <label class="guest-check">
+                  <input id="guest-danmaku" type="checkbox" checked />
+                  Пустить фразу по сайту
+                </label>
+                <p class="guest-hint">
+                  Полная запись останется в гостевой. Летать будет только эта
+                  фраза.
+                </p>
+                <button id="guest-select-quote" type="button">
+                  ВЗЯТЬ ВЫДЕЛЕННОЕ
+                </button>
+                <label for="guest-quote">
+                  Выбери фрагмент своей записи, до 64 знаков
+                </label>
+                <input id="guest-quote" maxlength="64" autocomplete="off" />
+                <small id="guest-quote-count">0 / 64</small>
+                <div
+                  id="guest-quote-preview"
+                  class="guest-quote-preview"
+                  aria-label="Предпросмотр летающей фразы"
+                ></div>
+              </fieldset>
+              <button id="guest-submit" type="submit" disabled>
+                ОТПРАВИТЬ
+              </button>
+              <p id="guest-status" role="status"></p>
+            </form>
+          </section>
+        </div>
+      </div>
+      <!-- соседи и авторы ресурсов, не растерять -->
+      <section class="card resources" id="resources">
+        <div class="site-exchange">
+          <a class="rss-link" href="rss.xml">RSS ↗</a>
+          <details>
+            <summary>МОЯ КНОПКА 88×31</summary>
+            <p>
+              <a href="Кнопки/danyan.png" download="danyan.png">
+                <img
+                  src="Кнопки/danyan.png"
+                  width="88"
+                  height="31"
+                  alt="DANYAN — скачать кнопку"
+                />
+              </a>
+            </p>
+            <label for="site-button-code">Код для твоего сайта</label>
+            <textarea
+              id="site-button-code"
+              readonly
+              rows="5"
+              spellcheck="false"
+            >
+&lt;a href=&quot;https://danyanspage.neocities.org/&quot;&gt;&lt;img src=&quot;https://danyanspage.neocities.org/buttons/danyan.png&quot; width=&quot;88&quot; height=&quot;31&quot; alt=&quot;DANYAN — личная страничка&quot;&gt;&lt;/a&gt;</textarea
+            >
+          </details>
+        </div>
+        <h2>КЛАССНЫЕ САЙТЫ</h2>
+        <!-- FRIENDS:START --><div class="button-wall friend-buttons" aria-label="Neocities"><a href="https://shiary.neocities.org/" target="_blank" rel="noopener"><img src="https://shiary.neocities.org/shiary8831-1.png" width="88" height="31" alt="Shiary" loading="lazy" style="vertical-align:middle"></a></div><!-- FRIENDS:END -->
+        <details class="resource-details">
+          <summary>АВТОРЫ И ЛИЦЕНЗИИ</summary>
+          <div class="button-wall" aria-label="Ресурсы и ссылки">
+            <a
+              href="https://t.me/mewmewmewmewmewmewmewme"
+              target="_blank"
+              rel="noopener"
+              title="МОЙ ТГ MEW MEW"
+            >
+              <img
+                src="Кнопки/telegram.png"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="МОЙ ТГ MEW MEW"
+              />
+            </a>
+            <a
+              href="https://neocities.org/"
+              target="_blank"
+              rel="noopener"
+              title="NEOCITIES FREE WEB"
+            >
+              <img
+                src="Кнопки/neocities.png"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="NEOCITIES FREE WEB"
+              />
+            </a>
+            <a
+              href="https://www.nyan.cat/"
+              target="_blank"
+              rel="noopener"
+              title="NYAN CAT NYAN!"
+            >
+              <img
+                src="Кнопки/nyan.png"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="NYAN CAT NYAN!"
+              />
+            </a>
+            <a
+              href="https://fonts.google.com/specimen/Press+Start+2P"
+              target="_blank"
+              rel="noopener"
+              title="PRESS START CODEMAN38"
+            >
+              <img
+                src="Кнопки/font.png"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="PRESS START CODEMAN38"
+              />
+            </a>
+            <a
+              href="https://kenney.nl/assets/cursor-pixel-pack"
+              target="_blank"
+              rel="noopener"
+              title="KENNEY CURSORS"
+            >
+              <img
+                src="Кнопки/kenney.png"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="KENNEY CURSORS"
+              />
+            </a>
+            <a
+              href="https://jeelh.itch.io/retro-cursor"
+              target="_blank"
+              rel="noopener"
+              title="JEELH RETRO"
+            >
+              <img
+                src="Кнопки/jeelh.png"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="JEELH RETRO"
+              />
+            </a>
+            <a
+              href="https://ko-fi.com/s/b1417d6fab"
+              target="_blank"
+              rel="noopener"
+              title="UNKNOWN RORI"
+            >
+              <img
+                src="Кнопки/rori.png"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="UNKNOWN RORI"
+              />
+            </a>
+            <a
+              href="https://www.deviantart.com/reginatheangel/art/Reimu-Plush-PNG-891618620"
+              target="_blank"
+              rel="noopener"
+              title="REGINA FUMO PNG"
+            >
+              <img
+                src="Кнопки/fumo.png"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="REGINA FUMO PNG"
+              />
+            </a>
+            <a
+              href="https://github.com/twitter/twemoji"
+              target="_blank"
+              rel="noopener"
+              title="TWEMOJI PEN"
+            >
+              <img
+                src="Кнопки/twemoji.png"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="TWEMOJI PEN"
+              />
+            </a>
+            <a
+              href="https://commons.wikimedia.org/wiki/File:Microwave_oven,_front.JPG"
+              target="_blank"
+              rel="noopener"
+              title="JSTAPKO CC BY-SA"
+            >
+              <img
+                src="Кнопки/microwave.png"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="JSTAPKO CC BY-SA"
+              />
+            </a>
+            <a
+              href="https://foni.papik.pro/3532-chebupeli.html"
+              target="_blank"
+              rel="noopener"
+              title="ЧЕБУПЕЛИ ФОТО"
+            >
+              <img
+                src="Кнопки/chebu.png"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="ЧЕБУПЕЛИ ФОТО"
+              />
+            </a>
+            <a
+              href="https://www.youtube.com/watch?v=6-8E4Nirh9s"
+              target="_blank"
+              rel="noopener"
+              title="CARAMELL DANSEN"
+            >
+              <img
+                src="Кнопки/caramel.png"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="CARAMELL DANSEN"
+              />
+            </a>
+
+            <a
+              href="https://www.aseprite.org/"
+              target="_blank"
+              rel="noopener"
+              title="ASEPRITE"
+            >
+              <img
+                src="Кнопки/aseprite.svg"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="ASEPRITE"
+              />
+            </a>
+            <a
+              href="https://www.adobe.com/products/photoshop.html"
+              target="_blank"
+              rel="noopener"
+              title="PHOTOSHOP"
+            >
+              <img
+                src="Кнопки/photoshop.svg"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="PHOTOSHOP"
+              />
+            </a>
+            <a
+              href="https://code.visualstudio.com/"
+              target="_blank"
+              rel="noopener"
+              title="VS CODE"
+            >
+              <img
+                src="Кнопки/vscode.svg"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="VS CODE"
+              />
+            </a>
+            <a
+              href="https://github.com/"
+              target="_blank"
+              rel="noopener"
+              title="GITHUB"
+            >
+              <img
+                src="Кнопки/github.svg"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="GITHUB"
+              />
+            </a>
+            <a
+              href="https://www.python.org/"
+              target="_blank"
+              rel="noopener"
+              title="PYTHON"
+            >
+              <img
+                src="Кнопки/python.svg"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="PYTHON"
+              />
+            </a>
+            <a
+              href="https://nodejs.org/"
+              target="_blank"
+              rel="noopener"
+              title="NODE.JS"
+            >
+              <img
+                src="Кнопки/nodejs.svg"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="NODE.JS"
+              />
+            </a>
+            <a
+              href="https://www.sqlite.org/"
+              target="_blank"
+              rel="noopener"
+              title="SQLITE"
+            >
+              <img
+                src="Кнопки/sqlite.svg"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="SQLITE"
+              />
+            </a>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web"
+              target="_blank"
+              rel="noopener"
+              title="MDN"
+            >
+              <img
+                src="Кнопки/mdn.svg"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="MDN"
+              />
+            </a>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/HTML"
+              target="_blank"
+              rel="noopener"
+              title="HTML"
+            >
+              <img
+                src="Кнопки/html.svg"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="HTML"
+              />
+            </a>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/CSS"
+              target="_blank"
+              rel="noopener"
+              title="CSS"
+            >
+              <img
+                src="Кнопки/css.svg"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="CSS"
+              />
+            </a>
+            <a
+              href="https://developer.mozilla.org/en-US/docs/Web/JavaScript"
+              target="_blank"
+              rel="noopener"
+              title="JAVASCRIPT"
+            >
+              <img
+                src="Кнопки/javascript.svg"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="JAVASCRIPT"
+              />
+            </a>
+            <a
+              href="https://www.pythonanywhere.com/"
+              target="_blank"
+              rel="noopener"
+              title="PYTHON"
+            >
+              <img
+                src="Кнопки/pythonanywhere.svg"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="PYTHON"
+              />
+            </a>
+            <a
+              href="https://neocities.org/api"
+              target="_blank"
+              rel="noopener"
+              title="NEOCITIES"
+            >
+              <img
+                src="Кнопки/neocities-api.svg"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="NEOCITIES"
+              />
+            </a>
+            <a
+              href="https://python-pillow.github.io/"
+              target="_blank"
+              rel="noopener"
+              title="PILLOW"
+            >
+              <img
+                src="Кнопки/pillow.svg"
+                width="88"
+                height="31"
+                loading="lazy"
+                alt="PILLOW"
+              />
+            </a>
+          </div>
+          <p class="fine-print">
+            Press Start 2P: CodeMan38 · OFL. Фото микроволновки: Jstapko · CC
+            BY-SA 3.0. Ручка: Twemoji · CC BY 4.0.
+          </p>
+          <p class="fine-print">
+            Текстуры стен чата: Amal Kumar и Dimitrios Savva · Poly Haven · CC0.
+            Бумага Paper Fibers: Heliodor Jalba · Subtle Patterns / Transparent
+            Textures.
+          </p>
+          <p class="fine-print">
+            <a
+              href="https://polyhaven.com/a/painted_plaster_wall"
+              target="_blank"
+              rel="noopener"
+            >
+              Painted Plaster Wall
+            </a>
+            ·
+            <a
+              href="https://polyhaven.com/a/peeling_painted_wall"
+              target="_blank"
+              rel="noopener"
+            >
+              Peeling Painted Wall
+            </a>
+            ·
+            <a
+              href="https://polyhaven.com/license"
+              target="_blank"
+              rel="noopener"
+            >
+              Poly Haven CC0
+            </a>
+            ·
+            <a
+              href="https://www.transparenttextures.com/paper-fibers.html"
+              target="_blank"
+              rel="noopener"
+            >
+              Paper Fibers
+            </a>
+            ·
+            <a href="texture-credits.txt">Источники и обработка текстур</a>
+            ·
+            <a href="emo-music-credits.txt">Музыка эмо-режима</a>
+          </p>
+          <p class="fine-print">
+            <a href="https://www.kolobok.us/" target="_blank" rel="noopener">
+              Copyright © Aiwan. Kolobok Smiles
+            </a>
+            ·
+            <a href="Кнопки/kolobok-license.txt">Лицензия смайлов</a>
+          </p>
+          <a href="Шрифт/pressstart2p-OFL.txt">Лицензия шрифта</a>
+          ·
+          <a href="Курсоры/credits.txt">Авторы курсоров</a>
+          ·
+          <a href="toy-credits.txt">Источники фотографий</a>
+          ·
+          <a href="Кнопки/credits.txt">Кнопки</a>
+          ·
+          <a href="Кнопки/devicon-MIT.txt">Devicon MIT</a>
+          ·
+          <a href="Кнопки/simple-icons-CC0.txt">Simple Icons CC0</a>
+        </details>
+      </section>
+      <footer>СТРОЙКА НЕ ЗАКАНЧИВАЕТСЯ. МОЖНО ПРИХОДИТЬ.</footer>
+      <a class="source-code-button" href="https://github.com/NuleCha/danyanspage" target="_blank" rel="noopener noreferrer">
+        <img class="source-reimu" src="Картинки/source-reimu.jpg" width="72" height="71" alt="" loading="lazy" decoding="async">
+        <strong>ИСХОДНЫЙ<br>КОД</strong>
+        <small data-i18n-ru="ЗАБИРАЙ · МЕНЯЙ · ДЕЛИСЬ" data-i18n-en="TAKE IT · CHANGE IT · SHARE IT">ЗАБИРАЙ · МЕНЯЙ · ДЕЛИСЬ</small>
+      </a>
+
+    </main>
+    <div class="toolbar">
+      <strong>ПАНЕЛЬКА</strong>
+      <button id="shuffle">Другая раскладка</button>
+      <button id="pause" aria-pressed="false">Свет: живёт</button>
+      <button id="test">Переключить окно сейчас</button>
+      <label>
+        Масштаб
+        <select id="scale">
+          <option value="72">Мелко</option>
+          <option value="96" selected>Средне</option>
+          <option value="144">Крупно</option>
+        </select>
+      </label>
+      <span id="status" aria-live="polite"></span>
+    </div>
+    <!-- настройки раньше скриптов. Иначе они ещё не существуют, когда их уже читают -->
+    <script src="settings.js"></script>
+    <script src="cursors.js"></script>
+    <script src="background.js?v=29"></script>
+    <script src="site.js?v=29"></script>
+    <script src="guestbook.js"></script>
+    <script src="danmaku.js?v=29"></script>
+    <script src="player-dock.js"></script>
+    <script src="caramel.js?v=29"></script>
+    <script src="emo-tracks.js"></script>
+    <script src="emo.js"></script>
+    <script src="nyan.js?v=29"></script>
+    <script src="chebu.js?v=29"></script>
+    <script src="language.js"></script>
+    <script src="rika.js"></script>
+    <script src="cursor-motion-v2-20261021.js"></script>
+  </body>
+</html>

@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="ru">
+  <head><!-- Сам чат приезжает отдельно. Всё вокруг него остаётся местным. -->
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>DANYAN / Чат</title>
+    <script src="preferences.js"></script>
+    <link rel="stylesheet" href="style.css?v=30" />
+    <link rel="stylesheet" href="chat.css?v=30" />
+  </head>
+  <body class="chat-page">
+    <div id="facade" aria-hidden="true"></div>
+    <div class="construction pixel-construction" aria-hidden="true"></div>
+
+    <header class="chat-controls">
+      <div class="simple-control">
+        <button
+          id="low-power"
+          class="physical-switch"
+          type="button"
+          aria-pressed="false"
+          aria-describedby="simple-hint"
+        >
+          <span class="switch-lamp" aria-hidden="true"></span>
+          <span id="simple-title">УПРОЩЁННЫЙ РЕЖИМ</span>
+          <span id="simple-state">ВЫКЛ</span>
+        </button>
+        <small id="simple-hint">* если сайт плохо грузится</small>
+      </div>
+      <nav class="site-nav"><button id="quiet">СВЕТ: ПАУЗА</button></nav>
+    </header>
+    <section class="chat-wall">
+      <header class="chat-ad" aria-label="Чат">
+        <div class="ad-paper">
+          <span class="ad-pin" aria-hidden="true"></span>
+          <h1 data-en="CHAT">ЧАТ</h1>
+          <div class="ad-tabs">
+            <a href="index.html"
+              ><span class="ad-tab-print"
+                ><strong class="ad-tab-label" data-en="HOME"
+                  >ГЛАВНАЯ</strong
+                ></span
+              ></a
+            ><a href="index.html#guestbook"
+              ><span class="ad-tab-print"
+                ><strong class="ad-tab-label" data-en="GUESTBOOK"
+                  >ГОСТЕВАЯ</strong
+                ></span
+              ></a
+            ><a href="#chat-app"
+              ><span class="ad-tab-print"
+                ><strong class="ad-tab-label" data-en="TOPICS"
+                  >ТЕМЫ</strong
+                ></span
+              ></a
+            ><a href="rss.xml"
+              ><span class="ad-tab-print"
+                ><strong class="ad-tab-label" data-en="RSS">RSS</strong></span
+              ></a
+            ><a
+              href="https://t.me/mewmewmewmewmewmewmewme"
+              target="_blank"
+              rel="noopener"
+              ><span class="ad-tab-print"
+                ><strong class="ad-tab-label" data-en="TELEGRAM"
+                  >ТЕЛЕГРАМ</strong
+                ></span
+              ></a
+            >
+          </div>
+        </div>
+      </header>
+      <div class="chat-layout">
+        <div class="chat-shell" id="chat-app">
+          <aside class="chat-sidebar">
+            <h2 data-en="Topics">Темы</h2>
+            <div id="topics"></div>
+            <button id="topics-refresh" data-en="Refresh topics">
+              Обновить темы</button
+            ><button id="chat-language">RU / EN</button>
+          </aside>
+          <main class="chat-window">
+            <section class="thread-head">
+              <h2 id="topic-title" data-en="Choose a topic">Выбери тему</h2>
+              <p id="topic-description"></p>
+              <p class="small">
+                <span data-en="Your code:">Твой код:</span>
+                <strong id="my-code">…</strong>
+              </p>
+            </section>
+            <div class="history-toolbar">
+              <button id="older" hidden data-en="Older messages">Раньше</button
+              ><button id="refresh" data-en="Refresh">Обновить</button
+              ><label class="small"
+                ><input type="checkbox" id="auto" checked /><span
+                  data-en="Auto refresh"
+                  >Автообновление</span
+                ></label
+              >
+            </div>
+            <section
+              id="messages"
+              class="messages"
+              aria-label="Сообщения"
+            ></section>
+            <form id="chat-form">
+              <div class="nick-line">
+                <label for="nick" data-en="Nickname (optional)"
+                  >Ник (необязательно)</label
+                ><input id="nick" maxlength="24" autocomplete="off" /><span
+                  class="small"
+                  data-en="Your code stays visible next to the nickname."
+                  >Код остаётся рядом с ником.</span
+                >
+              </div>
+              <label for="message" data-en="Message">Сообщение</label
+              ><textarea
+                id="message"
+                maxlength="500"
+                rows="3"
+                required
+              ></textarea>
+              <div class="send-line">
+                <details class="chat-smiles">
+                  <summary data-en="Smileys">Смайлы</summary>
+                  <div id="smile-picker"></div>
+                </details>
+                <span id="counter" class="small">0 / 500</span
+                ><button id="send" type="submit" disabled data-en="Send">
+                  Отправить
+                </button>
+              </div>
+            </form>
+            <p id="chat-status" role="status" class="small"></p>
+            <details class="chat-rules">
+              <summary data-en="Rules, storage and privacy">
+                Правила, хранение и данные
+              </summary>
+              <p
+                data-en="Messages: up to 500 characters, no uploads. Links and suspicious messages await review. Profanity alone is allowed. Report spam and harassment."
+              >
+                До 500 знаков, без загрузки файлов. Ссылки и подозрительные
+                сообщения — на проверку. Мат сам по себе разрешён. На спам и
+                травлю можно пожаловаться.
+              </p>
+              <p
+                data-en="Up to 30 days, the latest 2,000 messages per topic and 6,000 in total. Cleanup runs when the chat is accessed; older messages may disappear sooner when limits are reached."
+              >
+                До 30 дней, последние 2000 сообщений в теме и 6000 всего.
+                Очистка срабатывает при обращении к чату; при достижении лимита
+                старые сообщения исчезают раньше.
+              </p>
+              <p
+                data-en="A random secret is stored in this browser; the server stores its hash and assigns a public code. Clearing browser data or 30 days of inactivity without stored messages may lose your code. Nicknames are not reserved accounts. Anti-spam uses hashed connection addresses; PythonAnywhere also keeps technical logs."
+              >
+                В браузере хранится случайный секрет; сервер хранит его хеш и
+                выдаёт публичный код. После очистки браузера или 30 дней
+                неактивности без сообщений код может потеряться. Ники не
+                являются зарегистрированными аккаунтами. Антиспам использует хеш
+                адреса подключения; PythonAnywhere также ведёт технические
+                журналы.
+              </p>
+              <p>
+                <a
+                  href="texture-credits.txt"
+                  target="_blank"
+                  rel="noopener"
+                  data-en="Texture credits"
+                  >Авторы текстур</a
+                >
+              </p>
+              <p>
+                <a href="https://www.kolobok.us/" target="_blank" rel="noopener"
+                  >Copyright © Aiwan. Kolobok Smiles</a
+                >
+              </p>
+            </details>
+            <details class="owner">
+              <summary data-en="Owner / moderation">
+                Владельцу / модерация
+              </summary>
+              <form id="owner-login">
+                <label for="owner-key" data-en="Moderator key"
+                  >Ключ модератора</label
+                ><input
+                  id="owner-key"
+                  type="password"
+                  autocomplete="off"
+                /><button data-en="Sign in">Войти</button>
+              </form>
+              <section id="owner-panel" hidden>
+                <div id="chat-stats" class="small"></div>
+                <button id="owner-refresh" data-en="Refresh moderation">
+                  Обновить модерацию</button
+                ><button id="cleanup" data-en="Run retention cleanup">
+                  Проверить очистку</button
+                ><button id="owner-logout" data-en="Sign out">Выйти</button>
+                <form id="topic-form">
+                  <label for="new-title" data-en="New topic">Новая тема</label
+                  ><input id="new-title" maxlength="80" required /><label
+                    for="new-description"
+                    data-en="Description"
+                    >Описание</label
+                  ><textarea
+                    id="new-description"
+                    maxlength="500"
+                    rows="2"
+                  ></textarea
+                  ><button data-en="Create topic">Создать тему</button>
+                </form>
+                <button id="close-topic" data-en="Close / reopen current topic">
+                  Закрыть / открыть текущую тему
+                </button>
+                <div id="moderation-list"></div>
+              </section>
+            </details>
+          </main>
+        </div>
+        <aside class="chat-extras">
+          <div class="chat-toys chat-toys-visible">
+            <figure class="meme-print">
+              <span class="meme-tape tape-left" aria-hidden="true"></span>
+              <span class="meme-tape tape-right" aria-hidden="true"></span>
+              <a
+                href="based-meme.png"
+                target="_blank"
+                rel="noopener"
+                aria-label="Открыть мем в полном размере"
+              >
+                <picture>
+                  <source srcset="based-meme.webp" type="image/webp" />
+                  <img
+                    src="based-meme.png"
+                    width="640"
+                    height="640"
+                    alt="haha my meme is based — мем с Юи"
+                  />
+                </picture>
+              </a>
+              <span class="paper-fold" aria-hidden="true"></span>
+            </figure>
+            <section class="card cursor-card">
+              <h2>КУРСОРЫ</h2>
+              <p>
+                Здесь можно выбрать курсор. Некоторые открываются от
+                определённых действий на сайте.
+              </p>
+              <div
+                id="cursor-options"
+                class="cursor-options"
+                role="group"
+                aria-label="Выбор курсора"
+              ></div>
+            </section>
+            <section class="card">
+              <h2>ФАКТЫ О ХАБАРОВСКЕ</h2>
+              <p id="fortune-text" aria-live="polite">
+                Нажми — узнаешь что-нибудь крутое.
+              </p>
+              <p class="fact-credit">
+                <a id="fact-source" hidden target="_blank" rel="noopener"></a>
+              </p>
+              <button id="fortune">ВЫДАТЬ ФАКТ</button>
+            </section>
+            <section class="card chebu-card">
+              <h2>ЧЕБУПЕЛИ АХАХХА</h2>
+              <div class="chebu-oven">
+                <img
+                  src="microwave-photo.jpg"
+                  width="192"
+                  height="94"
+                  alt="Микроволновка"
+                />
+                <span id="chebu-time" aria-live="polite">00:00</span>
+              </div>
+              <div id="chebu-dish" aria-label="Чебупели"></div>
+              <button
+                id="chebu-start"
+                type="button"
+                aria-label="Разогреть чебупели"
+              >
+                ▶
+              </button>
+              <span id="chebu-status" class="sr-only" role="status"></span>
+            </section>
+            <section class="card folded">
+              <h2>НЕ ОТГИБАТЬ</h2>
+              <button id="peel" aria-expanded="false">
+                потянуть за уголок ↗
+              </button>
+              <p id="secret" hidden>⑨ тебя же просили, НЕ ОТГИБАТЬ!</p>
+            </section>
+          </div>
+        </aside>
+      </div>
+    </section>
+    <div class="toolbar" hidden>
+      <button id="pause"></button><button id="shuffle"></button
+      ><button id="test"></button
+      ><select id="scale">
+        <option value="96">96</option></select
+      ><span id="status"></span>
+    </div>
+    <div id="guest-posts" hidden></div>
+    <script src="chat.js"></script>
+    <script src="settings.js"></script>
+    <script src="cursors.js"></script>
+    <script src="background.js"></script>
+    <script src="site.js"></script>
+    <script src="danmaku.js"></script>
+    <script src="player-dock.js"></script>
+    <script src="caramel.js"></script>
+    <script src="emo-tracks.js"></script>
+    <script src="emo.js"></script>
+    <script src="nyan.js"></script>
+    <script src="chebu.js"></script>
+    <script src="rika.js"></script>
+    <script src="language.js"></script>
+    <script src="chat-site.js"></script>
+    <script src="cursor-motion-v2-20261021.js"></script>
+  </body>
+</html>

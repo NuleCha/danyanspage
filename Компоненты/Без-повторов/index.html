@@ -1,0 +1,12 @@
+<!doctype html><html lang="ru"><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Без повторов / Shuffle bag</title>
+<style>body{max-width:700px;margin:50px auto;padding:20px;font:20px/1.6 monospace;background:#202622;color:#e9dfbc}button{padding:16px;font:inherit}output{display:block;overflow-wrap:anywhere}</style>
+<h1>Случайно, но без повторов</h1><p>Каждые четыре нажатия дают полную пачку. На стыке пачек тоже нет повтора.</p>
+<button id="next">Дальше / Next</button><output id="history"></output>
+<script src="shuffle-bag.js"></script><script>
+var next = createShuffleBag(['A', 'B', 'C', 'D']);
+document.getElementById('next').onclick = function () {
+  document.getElementById('history').textContent += next() + ' ';
+};
+</script></html>

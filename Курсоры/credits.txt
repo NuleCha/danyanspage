@@ -1,0 +1,11 @@
+Crosshair and system selector preview: Kenney Cursor Pixel Pack, CC0. https://kenney.nl/assets/cursor-pixel-pack
+Pen: Twitter Twemoji, Twitter Inc and other contributors, CC BY 4.0 https://creativecommons.org/licenses/by/4.0/ . Source https://github.com/twitter/twemoji/blob/master/assets/72x72/1f58a.png . Resized to 32px.
+Nyan Cat: Christopher Torres, existing Nyan Cat GIF from https://www.nyan.cat/cats/original.gif . First frame cropped/resized.
+Chebupel: existing photo fragment; see ../toy-credits.txt.
+
+Main arrow, link hand, unavailable and text cursor: Retro Cursor by Jeelh.
+https://jeelh.itch.io/retro-cursor
+Converted from original Light CUR files to lossless PNG without scaling.
+
+Reimu PC98 animated cursor: Unknown Rori, user-supplied Windows Cursor Pack. https://ko-fi.com/s/b1417d6fab
+Selector photo: Reimu Plush (PNG), ReginaTheAngel. https://www.deviantart.com/reginatheangel/art/Reimu-Plush-PNG-891618620

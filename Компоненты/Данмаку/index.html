@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ru"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Данмаку отдельно / Standalone danmaku</title>
+<link rel="stylesheet" href="danmaku.css">
+<style>
+body{margin:0;background:#1b2423;color:#efe5cb;font:18px/1.6 monospace}
+main{position:relative;z-index:5;max-width:650px;margin:12vh auto;padding:24px;background:#293735}
+h1{font-size:26px}textarea{display:block;width:100%;box-sizing:border-box;min-height:120px;font:inherit}
+button{margin:12px 6px 0 0;font:inherit;padding:8px}a{color:#ffe073}
+</style>
+<main><h1>Данмаку отдельно</h1>
+<p>Никакого сервера. Фразы могут пролетать перед карточкой и за ней.
+Не больше двух одновременно, на телефоне одна. Клики проходят насквозь.</p>
+<label for="phrases">Одна фраза на строку / One phrase per line</label>
+<textarea id="phrases">ну здравствуй, интернет
+это можно забрать себе
+текст остаётся текстом &lt;b&gt;без HTML&lt;/b&gt;
+hello from the other side</textarea>
+<button id="apply">Применить / Apply</button>
+<button id="stop">Стоп / Stop</button><button id="start">Пуск / Start</button>
+<p>При системном reduced motion движение отключено.</p>
+<a href="../../README.md">Исходники сайта</a></main>
+<script src="danmaku.js"></script>
+<script>
+function apply() { Danmaku.setPhrases(document.getElementById('phrases').value.split('\n')); }
+document.getElementById('apply').onclick = apply;
+document.getElementById('stop').onclick = function () { Danmaku.stop(); };
+document.getElementById('start').onclick = function () { Danmaku.start(); };
+apply();
+</script></html>

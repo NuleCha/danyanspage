@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ru">
+  <head><!-- ещё один документ внутри страницы. Отсюда и переписка через postMessage -->
+    <base href="https://danyanspage.neocities.org/" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>DANYAN / Чат</title>
+    <link rel="stylesheet" href="style.css?v=cursor-motion-v2-20261021" />
+    <link rel="stylesheet" href="chat.css?v=cursor-motion-v2-20261021" />
+  </head>
+  <body class="chat-embedded">
+    <div class="chat-shell" id="chat-app">
+      <aside class="chat-sidebar">
+        <h2 data-en="Topics">Темы</h2>
+        <div id="topics"></div>
+        <button id="topics-refresh" data-en="Refresh topics">
+          Обновить темы</button
+        ><button id="chat-language">RU / EN</button>
+      </aside>
+      <main class="chat-window">
+        <section class="thread-head">
+          <h2 id="topic-title" data-en="Choose a topic">Выбери тему</h2>
+          <p id="topic-description"></p>
+          <p class="small">
+            <span data-en="Your code:">Твой код:</span>
+            <strong id="my-code">…</strong>
+          </p>
+        </section>
+        <div class="history-toolbar">
+          <button id="older" hidden data-en="Older messages">Раньше</button
+          ><button id="refresh" data-en="Refresh">Обновить</button
+          ><label class="small"
+            ><input type="checkbox" id="auto" checked /><span
+              data-en="Auto refresh"
+              >Автообновление</span
+            ></label
+          >
+        </div>
+        <section
+          id="messages"
+          class="messages"
+          aria-label="Сообщения"
+        ></section>
+        <form id="chat-form">
+          <div class="nick-line">
+            <label for="nick" data-en="Nickname (optional)"
+              >Ник (необязательно)</label
+            ><input id="nick" maxlength="24" autocomplete="off" /><span
+              class="small"
+              data-en="Your code stays visible next to the nickname."
+              >Код остаётся рядом с ником.</span
+            >
+          </div>
+          <label for="message" data-en="Message">Сообщение</label
+          ><textarea id="message" maxlength="500" rows="3" required></textarea>
+          <div class="send-line">
+            <details class="chat-smiles">
+              <summary data-en="Smileys">Смайлы</summary>
+              <div id="smile-picker"></div>
+            </details>
+            <span id="counter" class="small">0 / 500</span
+            ><button id="send" type="submit" disabled data-en="Send">
+              Отправить
+            </button>
+          </div>
+        </form>
+        <p id="chat-status" role="status" class="small"></p>
+        <details class="chat-rules">
+          <summary data-en="Rules, storage and privacy">
+            Правила, хранение и данные
+          </summary>
+          <p
+            data-en="Messages: up to 500 characters, no uploads. Links and suspicious messages await review. Profanity alone is allowed. Report spam and harassment."
+          >
+            До 500 знаков, без загрузки файлов. Ссылки и подозрительные
+            сообщения — на проверку. Мат сам по себе разрешён. На спам и травлю
+            можно пожаловаться.
+          </p>
+          <p
+            data-en="Up to 30 days, the latest 2,000 messages per topic and 6,000 in total. Cleanup runs when the chat is accessed; older messages may disappear sooner when limits are reached."
+          >
+            До 30 дней, последние 2000 сообщений в теме и 6000 всего. Очистка
+            срабатывает при обращении к чату; при достижении лимита старые
+            сообщения исчезают раньше.
+          </p>
+          <p
+            data-en="A random secret is stored in this browser; the server stores its hash and assigns a public code. Clearing browser data or 30 days of inactivity without stored messages may lose your code. Nicknames are not reserved accounts. Anti-spam uses hashed connection addresses; PythonAnywhere also keeps technical logs."
+          >
+            В браузере хранится случайный секрет; сервер хранит его хеш и выдаёт
+            публичный код. После очистки браузера или 30 дней неактивности без
+            сообщений код может потеряться. Ники не являются зарегистрированными
+            аккаунтами. Антиспам использует хеш адреса подключения;
+            PythonAnywhere также ведёт технические журналы.
+          </p>
+          <p>
+            <a
+              href="texture-credits.txt"
+              target="_blank"
+              rel="noopener"
+              data-en="Texture credits"
+              >Авторы текстур</a
+            >
+          </p>
+          <p>
+            <a href="https://www.kolobok.us/" target="_blank" rel="noopener"
+              >Copyright © Aiwan. Kolobok Smiles</a
+            >
+          </p>
+        </details>
+        <details class="owner">
+          <summary data-en="Owner / moderation">Владельцу / модерация</summary>
+          <form id="owner-login">
+            <label for="owner-key" data-en="Moderator key"
+              >Ключ модератора</label
+            ><input id="owner-key" type="password" autocomplete="off" /><button
+              data-en="Sign in"
+            >
+              Войти
+            </button>
+          </form>
+          <section id="owner-panel" hidden>
+            <div id="chat-stats" class="small"></div>
+            <button id="owner-refresh" data-en="Refresh moderation">
+              Обновить модерацию</button
+            ><button id="cleanup" data-en="Run retention cleanup">
+              Проверить очистку</button
+            ><button id="owner-logout" data-en="Sign out">Выйти</button>
+            <form id="topic-form">
+              <label for="new-title" data-en="New topic">Новая тема</label
+              ><input id="new-title" maxlength="80" required /><label
+                for="new-description"
+                data-en="Description"
+                >Описание</label
+              ><textarea
+                id="new-description"
+                maxlength="500"
+                rows="2"
+              ></textarea
+              ><button data-en="Create topic">Создать тему</button>
+            </form>
+            <button id="close-topic" data-en="Close / reopen current topic">
+              Закрыть / открыть текущую тему
+            </button>
+            <div id="moderation-list"></div>
+          </section>
+        </details>
+      </main>
+    </div>
+    <script src="chat.js"></script>
+    <script src="chat-site.js?v=cursor-motion-v2-20261021"></script>
+    <script src="https://danyanspage.neocities.org/cursor-motion-v2-20261021.js"></script>
+  </body>
+</html>

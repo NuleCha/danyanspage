@@ -1,0 +1,12 @@
+{
+  "id": "new-picture",
+  "type": "image",
+  "draft": true,
+  "date": "2026-10-18",
+  "title": "Название",
+  "image": "Картинки/photo.webp",
+  "alt": "Что на картинке",
+  "text": [
+    "Подпись."
+  ]
+}
